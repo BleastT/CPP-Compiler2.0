@@ -19,4 +19,10 @@ python Compiler.py compile_projectname
 ```
 
 
+Use this to recompile the whole project completely
+```python
+python Compiler.py recompileall
+```
+
+
 
