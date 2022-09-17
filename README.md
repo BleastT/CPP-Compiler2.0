@@ -1,6 +1,8 @@
 # CPP-Compiler2.0
 compiler made in python that uses g++ to compile your projects
 
+If you modify a header file, The cpp files that includes it will be recompiled, but this only applies for files that are in the same project direcotry. If you have multiple project directory they will be compiled separatly.
+
 Create new project
 ``` python
 python Compiler.py create_projectname
