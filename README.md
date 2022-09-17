@@ -25,4 +25,13 @@ python Compiler.py recompileall
 ```
 
 
+# Important
+In each project created there is a build.txt file
+In there you can specify some additional paramterers such as includes, libs and dependencies. You can also change the app type(exe or dll). You can Choose between Debug or release and add preprocessors.
+
+if you have multiple arguments to pass in includes, libs, dependencies or preprocessors, Add a ; before each argument. BEFORE and NOT AFTER
+
+Exemple: (libs :;src/folder/dsd;src2/folder/asa)
+
+
 
