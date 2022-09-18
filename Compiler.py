@@ -261,7 +261,8 @@ def build(DirPath):
                 Log(FAIL, f"[LINKER] Failed to create {app_name}.{app_type}")
         elif compiled == 0:
             Log(HEADER, f"[COMPILER] Linking ... (SKIP)")
-            run_app()
+            if app_type == "exe":
+                run_app()
         Log(OKGREEN, "")
         Log(OKGREEN, "")
 
