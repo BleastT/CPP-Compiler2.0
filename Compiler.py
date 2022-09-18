@@ -30,7 +30,6 @@ def copyToDir(folderName):
     folderName = folderName.replace("/", "\\")
     files = os.listdir(folderName)
     for file in files:
-        CreateFile(file)
         shutil.copy(f"{folderName}\\{file}", f"bin\\build\\{file}")
 
 
@@ -214,8 +213,6 @@ def build(DirPath):
     preprocessors   =     data[7].replace(";", " -D")
     build_type      =     data[8]
     cpp_version     =     data[9]
-
-    print(includes)
 
     Log(OKBLUE, f"[INFO] Compiling {DirPath} directory in {build_type} mode")
     Log(OKGREEN, "")
