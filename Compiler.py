@@ -244,7 +244,7 @@ def build(DirPath):
     if succeeded:
         result = 0
         if compiled > 0:
-            Log(HEADER, f"[COMPILER] Linking ...")
+            Log(WARNING, f"[LINKER] Linking ...")
             if app_type == "exe":
                 result = os.system(f'cmd /c"g++ {build_parameter} -g --std=c++{cpp_version} bin\\obj\\{DirPath}\\*.o -o bin\\build\\{app_name} {libs} {dependencies}"')
             elif app_type == "dll":
@@ -260,7 +260,7 @@ def build(DirPath):
             else:
                 Log(FAIL, f"[LINKER] Failed to create {app_name}.{app_type}")
         elif compiled == 0:
-            Log(HEADER, f"[COMPILER] Linking ... (SKIP)")
+            Log(WARNING, f"[LINKER] Linking ... (SKIP)")
             if app_type == "exe":
                 run_app()
         Log(OKGREEN, "")
