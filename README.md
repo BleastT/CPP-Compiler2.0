@@ -26,6 +26,11 @@ Use this to recompile the whole project completely
 python Compiler.py recompileall
 ```
 
+Or this to recompile specifi project
+```python 
+python Compiler.py recompile_projectname
+```
+
 
 # Important
 In each project created there is a build.txt file
