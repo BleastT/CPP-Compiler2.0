@@ -285,12 +285,10 @@ def build(DirPath):
                         copyToDir(dir)
                     else:
                         Log(WARNING, f"{dir} was not found")
-                run_app()
             else:
                 Log(FAIL, f"[LINKER] Failed to create {app_name}.{app_type}")
         elif compiled == 0:
             Log(WARNING, f"[LINKER] Linking ... (SKIP)")
-            run_app()
 
         Log(OKGREEN, "")
         Log(OKGREEN, "")
@@ -339,6 +337,7 @@ def main():
                 if CheckIfPathExist(f"{dir}\\build.txt"):
                     build(dir)
             end = time.time();
+            run_app()
             Log(OKBLUE, f"Compilation took: {round(end - start, 4)} seconds")
 
         
