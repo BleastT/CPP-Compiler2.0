@@ -2,6 +2,7 @@ import os
 import sys
 import shutil
 import time
+from xml.etree.ElementInclude import include
 
 HEADER = '\033[95m'
 OKBLUE = '\033[94m'
@@ -19,13 +20,27 @@ def removeDir(path):
     except:
         Log(FAIL, f"[INFO] Cannot delete {path} directory")
 
+def copyDir(folderName):
+    name = folderName.split("/")[-1]
+    if CheckIfPathExist(f"bin\\build\\{name}"):
+        removeDir(f"bin\\build\\{name}")
+    shutil.copytree(f"{folderName}", f"bin\\build\\{name}")
+
+def copyToDir(folderName):
+    folderName = folderName.replace("/", "\\")
+    files = os.listdir(folderName)
+    for file in files:
+        CreateFile(file)
+        shutil.copy(f"{folderName}\\{file}", f"bin\\build\\{file}")
+
+
 try:
     argument = sys.argv[1]
 except IndexError:
     argument = ""
 
 def VerifyPath(path):
-    if os.path.exists(path):
+    if CheckIfPathExist(path):
         removeDir(path)
 
 def Log(level, message):
@@ -62,6 +77,8 @@ def CreateBuildTemplate(file, app_name):
     f.write("______________BUILD INFORMATION___________\n\n\n")
     f.write(f"App name                     :{app_name}\n")
     f.write("Extension Type               :exe\n")
+    f.write("Ressource Folder             :\n")
+    f.write("Necessary Files              :\n")
     f.write("Additionnal Includes Dir     :\n")
     f.write("Additionnal Lib Dir          :\n")
     f.write("Additionnal dependencies     :\n")
@@ -187,14 +204,18 @@ def build(DirPath):
     cpp_files = FindCppFiles(DirPath)
     h_files = FindHFiles(DirPath)
 
-    app_name = data[0]
-    app_type = data[1]
-    includes = data[2].replace(";", " -I")
-    libs = data[3].replace(";", " -L")
-    dependencies = data[4].replace(";", " -l")
-    preprocessors = data[5].replace(";", " -D")
-    build_type = data[6]
-    cpp_version = data[7]
+    app_name        =     data[0]
+    app_type        =     data[1]
+    ressource_dir   =     data[2].split(";")[1:]
+    nece_files      =     data[3].split(";")[1:]
+    includes        =     data[4].replace(";", " -I")
+    libs            =     data[5].replace(";", " -L")
+    dependencies    =     data[6].replace(";", " -l")
+    preprocessors   =     data[7].replace(";", " -D")
+    build_type      =     data[8]
+    cpp_version     =     data[9]
+
+    print(includes)
 
     Log(OKBLUE, f"[INFO] Compiling {DirPath} directory in {build_type} mode")
     Log(OKGREEN, "")
@@ -254,15 +275,23 @@ def build(DirPath):
                 Log(FAIL, f"[LINKER]{app_type} does not exist or we do not support it")
             if result == 0:
                 Log(OKGREEN, f"[LINKER] Successfully created {app_name}.{app_type}")
-                if app_type == "exe":
-                    Log(BOLD, f"[LINKER] Running {app_name}")
-                    run_app()
+                for dir in ressource_dir:
+                    if CheckIfPathExist(f"{dir}"):
+                        copyDir(dir)
+                    else:
+                        Log(WARNING, f"{dir} was not found")
+                for dir in nece_files:
+                    if CheckIfPathExist(f"{dir}"):
+                        copyToDir(dir)
+                    else:
+                        Log(WARNING, f"{dir} was not found")
+                run_app()
             else:
                 Log(FAIL, f"[LINKER] Failed to create {app_name}.{app_type}")
         elif compiled == 0:
             Log(WARNING, f"[LINKER] Linking ... (SKIP)")
-            if app_type == "exe":
-                run_app()
+            run_app()
+
         Log(OKGREEN, "")
         Log(OKGREEN, "")
 
